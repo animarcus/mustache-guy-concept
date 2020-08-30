@@ -2,51 +2,76 @@ const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 
 
-const player = new Player("Marcus");
+const player = new Player("Brad");
+
+let keysPressed = {};
 
 let jumping = false;
+let jumpLength = 6;
+let playerSpeed = 6;
+let isGrounded = false;
+let nearestGrounded = 0;
+
+let againstLeftWall = false;
+let againstRightWall = false;
 
 function animate() {
   ctx.clearRect(0,0,canvas.width, canvas.height);
+  // console.log(nearestPlatform());
+  nearestGrounded = nearestPlatform();
+  console.log(nearestGrounded.name, nearestGrounded.y);
   player.draw();
-  player.update();
+  player.movement();
   player.higher();
+  handlePlatforms();
   requestAnimationFrame(animate);
 }
 animate();
 
+
+
 let handlers = {
   keyDown : function(e) {
     if (e.key === 'a' || e.key === 'ArrowLeft') {
-      if (player.speedX > -10) {
-        player.speedX = -10;
-        console.log(player.speedX);
-      }
+      keysPressed.left = true;
     }
     if (e.key === 'd' || e.key === 'ArrowRight') {
-      if (player.speedX < 10) {
-        player.speedX = 10;
-        console.log(player.speedX);
-      }
+      keysPressed.right = true;
     }
     if (e.key === 'w' || e.key === 'ArrowUp') {
-      if (!e.repeat && player.jumpTime < 1 && player.y + player.height >= canvas.height) {
-        player.jumpTime = 1;
-      }
+      keysPressed.up = true;
+    }
+    if (e.key === 's' || e.key === 'ArrowDown') {
+      keysPressed.down = true;
+      player.gravity = 1;
     }
   },
   keyUp  : function(e) {
     if (e.key === 'a' || e.key === 'ArrowLeft') {
-      console.log("slowing left");
-      player.speedX = 0;
+      if (keysPressed.left && keysPressed.right) {
+        delete keysPressed.left;
+      } else {
+        delete keysPressed.left;
+        player.speedX = 0;
+      }
     }
     if (e.key === 'd' || e.key === 'ArrowRight') {
-      console.log("slowing right");
-      player.speedX = 0;
+      if (keysPressed.left && keysPressed.right) {
+        delete keysPressed.right;
+      } else {
+        delete keysPressed.right;
+        player.speedX = 0;
+      }
     }
-  //   // if (e.key === 'w' || e.key === 'ArrowUp') {
-      
-  //   // }
+    if (e.key === 's' || e.key === 'ArrowDown') {
+      delete keysPressed.down;
+      player.speedY = 0;
+      player.gravitySpeed = 3;
+      player.gravity = 0.2;
+    }
+    if (e.key === 'w' || e.key === 'ArrowUp') {
+      delete keysPressed.up;
+    }
   }
 };
 
