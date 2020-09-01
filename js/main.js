@@ -21,7 +21,7 @@ function animate() {
   nearestGrounded = nearestPlatform();
   // console.log(nearestGrounded.name, nearestGrounded.y);
   ctx.fillStyle = "red";
-  ctx.fillRect(player.x,player.y + player.height,30,nearestGrounded.y - player.y - player.height);
+  // ctx.fillRect(player.x,player.y + player.height,30,nearestGrounded.y - player.y - player.height);
   player.draw();
   player.movement();
   player.higher();
@@ -74,8 +74,47 @@ let handlers = {
     if (e.key === 'w' || e.key === 'ArrowUp') {
       delete keysPressed.up;
     }
+  },
+  touchStart : function(e) {
+    let elementClicked = e.target;
+    if (elementClicked.id === "rightBtn") {
+      e.key = 'd';
+      // console.log(e);
+      handlers.keyDown(e);
+    } else if (elementClicked.id === "leftBtn") {
+      e.key = 'a';
+      handlers.keyDown(e);
+    } else if (elementClicked.id === "upBtn") {
+      e.key = 'w';
+      handlers.keyDown(e);
+    } else if (elementClicked.id === "downBtn") {
+      e.key = 's';
+      handlers.keyDown(e);
+    }
+  },
+  touchEnd : function(e) {
+    let elementClicked = e.target;
+    if (elementClicked.id === "rightBtn") {
+      e.key = 'd';
+      // console.log(e);
+      handlers.keyUp(e);
+    } else if (elementClicked.id === "leftBtn") {
+      e.key = 'a';
+      handlers.keyUp(e);
+    } else if (elementClicked.id === "upBtn") {
+      e.key = 'w';
+      handlers.keyUp(e);
+    } else if (elementClicked.id === "downBtn") {
+      e.key = 's';
+      handlers.keyUp(e);
+    }
   }
 };
 
 window.addEventListener('keydown', handlers.keyDown);
 window.addEventListener('keyup', handlers.keyUp);
+
+document.addEventListener("touchstart", handlers.touchStart, false);
+document.addEventListener("touchend", handlers.touchEnd, false);
+document.addEventListener("mousedown", handlers.touchStart, false);
+document.addEventListener("mouseup", handlers.touchEnd, false);

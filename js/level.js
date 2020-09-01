@@ -53,7 +53,6 @@ class Obstacle {
             onPlatCount ++;
             return onPlatCount;
           }
-          
         } else if (player.y > this.y + this.height/2 &&
           player.y < this.y + this.height) {
           console.log("bottom");
