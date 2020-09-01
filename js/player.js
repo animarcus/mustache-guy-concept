@@ -33,7 +33,17 @@ class Player {
       this.gravitySpeed = 0;
       this.speedY = 0;
     }
-    this.gravitySpeed += this.gravity; // normal gravity stuff
+
+    // ctx.fillRect(player.x,player.y + player.height,30,nearestGrounded.y - player.y - player.height);
+    console.log(Math.floor(nearestGrounded.y +1 - (this.y + this.speedY + this.gravitySpeed + this.gravity + this.height)), Math.floor(nearestGrounded.y - this.y));
+    // this.gravitySpeed += this.gravity; // normal gravity stuff
+    // if (!isGrounded && Math.floor(nearestGrounded.y +1 - (this.y + this.speedY + this.gravitySpeed + this.gravity + this.height)) < 0) {
+    //   console.log("oops too close", canvas.height - nearestGrounded.y, this.height);
+    //   this.gravitySpeed = 0;
+    //   this.speedY = 0;
+    // } else {
+      this.gravitySpeed += this.gravity;
+    // }
     this.y += this.speedY + this.gravitySpeed;
     this.x += this.speedX;
   }

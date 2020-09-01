@@ -19,7 +19,9 @@ function animate() {
   ctx.clearRect(0,0,canvas.width, canvas.height);
   // console.log(nearestPlatform());
   nearestGrounded = nearestPlatform();
-  console.log(nearestGrounded.name, nearestGrounded.y);
+  // console.log(nearestGrounded.name, nearestGrounded.y);
+  ctx.fillStyle = "red";
+  ctx.fillRect(player.x,player.y + player.height,30,nearestGrounded.y - player.y - player.height);
   player.draw();
   player.movement();
   player.higher();

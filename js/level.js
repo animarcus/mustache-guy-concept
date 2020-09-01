@@ -46,11 +46,14 @@ class Obstacle {
     if (player.x + player.width > this.x &&
         player.x < this.x + this.width) {
         if (player.y + player.height > this.y && player.y + player.height < this.y + this.height/2) {
-          player.speedY = 0;
-          player.gravitySpeed = 0;
-          player.y = this.y - player.height;
-          onPlatCount ++;
-          return onPlatCount;
+          if (player.jumpTime < 1) {
+            player.y = this.y - player.height;
+            player.speedY = 0;
+            player.gravitySpeed = 0;
+            onPlatCount ++;
+            return onPlatCount;
+          }
+          
         } else if (player.y > this.y + this.height/2 &&
           player.y < this.y + this.height) {
           console.log("bottom");
@@ -99,7 +102,9 @@ function nearestPlatform() {
   }
   if (platformsUnder.length === 0) {
     platformsUnder[0] = {"name" : "ground",
-                        "y" : Math.floor(canvas.height - player.y)};
+                        "y" : canvas.height
+                        // "y" : Math.floor(canvas.height - player.y)
+                      };
   }
   return platformsUnder[0];
 }
